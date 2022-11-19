@@ -1,12 +1,13 @@
 import { GlobalDataContext } from "@/GlobalProvider.js";
 import { useEffect, useContext, useRef } from "react";
 import { fabric } from "fabric";
+import jsPDF from "jspdf";
 
 function PDFEditPage() {
   const { GlobalDispatch, GlobalState } = useContext(GlobalDataContext);
   const { pdfImg, signImg } = GlobalState;
   const canvas = useRef(null);
-
+  const pdf = new jsPDF();
   useEffect(() => {
     if (canvas.current !== null) {
       return;
@@ -39,6 +40,17 @@ function PDFEditPage() {
       canvas.current.add(image);
     });
   }
+  function handleDownload() {
+    const image = canvas.current.toDataURL("image/png");
+
+    // 設定背景在 PDF 中的位置及大小
+    const width = pdf.internal.pageSize.width;
+    const height = pdf.internal.pageSize.height;
+    pdf.addImage(image, "png", 0, 0, width, height);
+
+    // 將檔案取名並下載
+    pdf.save("download.pdf");
+  }
 
   return (
     <div className="pdf-edit-page">
@@ -46,8 +58,11 @@ function PDFEditPage() {
       <div className="pdf-edit-page__tool-bar">
         <div></div>
         <div>
-          <button className="pdf-edit-page__put-sign" onClick={handlePutSign}>
+          <button className="pdf-edit-page__big-btn" onClick={handlePutSign}>
             放上簽名檔
+          </button>
+          <button className="pdf-edit-page__big-btn" onClick={handleDownload}>
+            下載
           </button>
         </div>
       </div>

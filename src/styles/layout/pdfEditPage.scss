@@ -16,8 +16,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    >div:nth-child(2){
+      display: flex;
+      gap: 10px;
+    }
   }
-  &__put-sign {
+  &__big-btn {
     background: linear-gradient(180deg, #35a483 0%, #077854 100%);
     /* shadow */
 
