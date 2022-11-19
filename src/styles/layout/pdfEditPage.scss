@@ -1,0 +1,33 @@
+.pdf-edit-page {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  background: rgba(240, 240, 240, 0.58);
+  padding-bottom: 100px;
+  &__tool-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    box-shadow: 1px -1px 6px rgba(0, 0, 0, 0.11);
+    padding: 20px;
+    max-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__put-sign {
+    background: linear-gradient(180deg, #35a483 0%, #077854 100%);
+    /* shadow */
+
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.11);
+    border-radius: 16px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    padding: 10px 32px;
+    border: none;
+    color: #FFFFFF;
+  }
+}

@@ -1,0 +1,13 @@
+
+* {
+  box-sizing: border-box !important;
+  font-family: "Roboto", "Noto Sans TC", sans-serif, "Microsoft JhengHei",
+    "Helvetica", Arial !important;
+}
+body,
+html {
+  color: var(--font-color-dark);
+  font-size: var(--font-size);
+  background-color: rgba(240, 240, 240, 0.58);
+  height: 100%;
+}

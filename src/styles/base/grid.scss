@@ -1,0 +1,10 @@
+@mixin b1440{
+    @media(max-width: 1440px){
+        @content
+    }
+}
+@mixin b768{
+    @media(max-width: 768px){
+        @content
+    }
+}

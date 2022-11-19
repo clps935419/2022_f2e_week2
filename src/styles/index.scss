@@ -1,0 +1,18 @@
+//基礎使用
+@import "./base/reset.scss";
+@import "./base/mixin.scss";
+@import "./base/grid.scss"; //RWD尺寸定義
+@import "./base/varible.scss";
+@import "./base/common.scss";
+
+// //layout
+@import "./layout/header.scss";
+@import "./layout/uploadPage.scss";
+@import "./layout/createSign.scss";
+@import "./layout/pdfEditPage.scss";
+
+
+
+// //module
+// @import "./module/loading.scss";
+// @import "./module/button.scss";

@@ -1,0 +1,116 @@
+.upload {
+  &-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgba(240, 240, 240, 0.58);
+  }
+  &__box {
+    display: flex;
+    width: 85%;
+    height: 85%;
+    background: rgba(240, 240, 240, 0.58);
+    border-radius: 34px;
+    padding: 30px;
+    gap:20px
+  }
+  &__box-left {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__box-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__describe {
+    font-family: "Noto Sans TC";
+    font-weight: bolder;
+    font-size: 22px;
+    line-height: 26px;
+    /* Black */
+    color: #424242;
+    text-indent: 2;
+  }
+}
+.file-drop-area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 15px;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  border-radius: 3px;
+  transition: 0.2s;
+  background: #ffffff;
+  /* gray */
+
+  border: 2px dashed #b7b7b7;
+  border-radius: 26px;
+  &.is-active {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.fake-btn {
+  flex-shrink: 0;
+  width: 50%;
+  padding: 17px 0 15px 0;
+  text-align: center;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #35a483 0%, #077854 100%);
+  /* shadow */
+  box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.11);
+  border-radius: 16px;
+  color: white;
+}
+
+.file-msg {
+  font-size: small;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "Noto Sans TC";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+
+  /* Black */
+
+  color: #424242;
+}
+.file-msg2 {
+  font-family: "Noto Sans TC";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  /* Gradient */
+
+  background: linear-gradient(180deg, #35a483 0%, #077854 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+  &:focus {
+    outline: none;
+  }
+}
