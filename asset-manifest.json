@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.js": "/main.31070e86.js",
+    "main.css": "/static/css/main.98205b53.css",
+    "498.31070e86.js": "/498.31070e86.js",
+    "703.31070e86.js": "/703.31070e86.js",
+    "13.31070e86.js": "/13.31070e86.js",
+    "787.31070e86.js": "/787.31070e86.js",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "main.31070e86.js",
+    "static/css/main.98205b53.css"
+  ]
+}
