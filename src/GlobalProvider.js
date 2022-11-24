@@ -2,7 +2,8 @@ import React, { useReducer } from "react";
 
 //初始化值
 const initState = {
-  pdfImg:""
+  pdfImg:"",
+  signImg:""
 };
 
 function globalReducer(state, action) {

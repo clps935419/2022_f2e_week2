@@ -2,8 +2,9 @@ import React, { useRef, useContext } from "react";
 import { useEffect } from "react";
 import { GlobalDataContext } from "@/GlobalProvider.js";
 import { useNavigate } from "react-router-dom";
-import { Tabs } from "antd";
+import { Tabs, message } from "antd";
 import Form from "react-bootstrap/Form";
+
 
 function CreateSign() {
   const canvas = useRef(null);
@@ -114,6 +115,7 @@ function CreateSign() {
       type: "setSignImg",
       payload: { signImg: newImg },
     });
+    message.success("簽名創建成功");
     navigate("/pdfEdit");
   }
 

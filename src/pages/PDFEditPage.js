@@ -2,6 +2,7 @@ import { GlobalDataContext } from "@/GlobalProvider.js";
 import { useEffect, useContext, useRef } from "react";
 import { fabric } from "fabric";
 import jsPDF from "jspdf";
+import { message } from "antd";
 
 function PDFEditPage() {
   const { GlobalDispatch, GlobalState } = useContext(GlobalDataContext);
@@ -51,6 +52,15 @@ function PDFEditPage() {
     // 將檔案取名並下載
     pdf.save("download.pdf");
   }
+  function handleDelImg(){
+    var object = canvas.current.getActiveObject();
+    if (!object) {
+      message.error("請選擇簽名");
+      return "";
+    }
+    message.success("刪除成功");
+    canvas.current.remove(object);
+  }
 
   return (
     <div className="pdf-edit-page">
@@ -58,6 +68,9 @@ function PDFEditPage() {
       <div className="pdf-edit-page__tool-bar">
         <div></div>
         <div>
+          <button className="pdf-edit-page__big-btn" onClick={handleDelImg}>
+            刪除簽名檔
+          </button>
           <button className="pdf-edit-page__big-btn" onClick={handlePutSign}>
             放上簽名檔
           </button>

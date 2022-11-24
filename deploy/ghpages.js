@@ -5,7 +5,7 @@ const ghpages = require("gh-pages");
 
 const options = {
   branch: "gh-pages",
-  repo: "https://github.com/clps935419/2022_f2e_week1.git", // project github repo
+  repo: "https://github.com/clps935419/2022_f2e_week2.git", // project github repo
 };
 
 const callback = (err) => {
