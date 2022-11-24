@@ -53,7 +53,7 @@ function PDFEditPage() {
     pdf.save("download.pdf");
   }
   function handleDelImg(){
-    var object = canvas.current.getActiveObject();
+    const object = canvas.current.getActiveObject();
     if (!object) {
       message.error("請選擇簽名");
       return "";
