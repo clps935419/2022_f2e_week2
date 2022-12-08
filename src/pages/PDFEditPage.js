@@ -58,8 +58,18 @@ function PDFEditPage() {
       message.error("請選擇簽名");
       return "";
     }
-    message.success("刪除成功");
     canvas.current.remove(object);
+    message.success("刪除成功");
+  }
+  function handleDelAll() {
+    const signArr = canvas.current.getObjects();
+    if(signArr.length === 0){
+      return;
+    }
+    signArr.forEach((item) => {
+      canvas.current.remove(item);
+    });
+    message.success("刪除成功");
   }
 
   return (
@@ -68,6 +78,9 @@ function PDFEditPage() {
       <div className="pdf-edit-page__tool-bar">
         <div></div>
         <div>
+          <button className="pdf-edit-page__big-btn" onClick={handleDelAll}>
+            刪除全部簽名檔
+          </button>
           <button className="pdf-edit-page__big-btn" onClick={handleDelImg}>
             刪除簽名檔
           </button>

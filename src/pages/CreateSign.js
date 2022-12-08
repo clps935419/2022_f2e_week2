@@ -44,10 +44,13 @@ function CreateSign() {
     canvas.current.addEventListener("mouseleave", finishedPosition);
     canvas.current.addEventListener("mousemove", draw);
     return () => {
-      // canvas.current.removeEventListener("mousedown", startPosition);
-      // canvas.current.removeEventListener("mouseup", finishedPosition);
-      // canvas.current.removeEventListener("mouseleave", finishedPosition);
-      // canvas.current.removeEventListener("mousemove", draw);
+      if(!!!canvas.current){
+        return;
+      }
+      canvas.current.removeEventListener("mousedown", startPosition);
+      canvas.current.removeEventListener("mouseup", finishedPosition);
+      canvas.current.removeEventListener("mouseleave", finishedPosition);
+      canvas.current.removeEventListener("mousemove", draw);
     };
   }, []);
 

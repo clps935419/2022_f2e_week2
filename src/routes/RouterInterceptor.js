@@ -6,7 +6,6 @@ function RouterInterceptor({ inner }) {
   const {type} = inner;
   const { GlobalState, GlobalDispatch } = useContext(GlobalDataContext);
   const { pdfImg, signImg } = GlobalState;
-  console.log("近來",inner, pdfImg, signImg);
   if (type.name === "CreateSign"){
     if (!!!pdfImg) {
       //如果沒有PDF回到首頁

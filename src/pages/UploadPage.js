@@ -20,7 +20,8 @@ function UploadPage() {
 
   const props = {
     name: "file",
-    multiple: true,
+    multiple: false,
+    accept:"image/*,.pdf",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     onChange: async (e) => {
       console.log("in",e.target.files);
@@ -59,7 +60,7 @@ function UploadPage() {
             <div className="file-drop-area">
               <span className="fake-btn">選擇檔案</span>
               <span className="file-msg">或拖曳檔案到此處</span>
-              <span className="file-msg2">(限10MB 內的PDF或JPG檔)</span>
+              <span className="file-msg2">(限10MB 內的PDF或圖片檔)</span>
               <input className="file-input" type="file" multiple {...props} />
             </div>
           </div>
@@ -86,6 +87,7 @@ async function printPDF(pdfData) {
 
   // 利用解碼的檔案，載入 PDF 檔及第一頁
   const pdfDoc = await pdfjs.getDocument({ data }).promise;
+  console.log("🚀 ~ file: UploadPage.js:90 ~ printPDF ~ pdfDoc", pdfDoc)
   const pdfPage = await pdfDoc.getPage(1);
 
   // 設定尺寸及產生 canvas
