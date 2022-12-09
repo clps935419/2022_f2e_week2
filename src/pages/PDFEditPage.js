@@ -1,12 +1,13 @@
 import { GlobalDataContext } from "@/GlobalProvider.js";
-import { useEffect, useContext, useRef } from "react";
+import { useEffect, useContext, useRef,useState } from "react";
 import { fabric } from "fabric";
 import jsPDF from "jspdf";
 import { message } from "antd";
 
 function PDFEditPage() {
   const { GlobalDispatch, GlobalState } = useContext(GlobalDataContext);
-  const { pdfImg, signImg } = GlobalState;
+  const { pdfImg,pdfImgArr, signImg , pageNo } = GlobalState;
+  console.log("---", pdfImg, pdfImgArr, signImg, pageNo);
   const canvas = useRef(null);
   const pdf = new jsPDF();
   useEffect(() => {
@@ -71,6 +72,19 @@ function PDFEditPage() {
     });
     message.success("刪除成功");
   }
+  function handlePage(type){
+    if(type==="add"){
+      GlobalDispatch({
+        type: "setPageNo",
+        payload: { pageNo: pageNo + 1 },
+      });
+    }else{
+      GlobalDispatch({
+        type: "setPageNo",
+        payload: { pageNo: pageNo - 1 },
+      });
+    }
+  }
 
   return (
     <div className="pdf-edit-page">
@@ -78,6 +92,24 @@ function PDFEditPage() {
       <div className="pdf-edit-page__tool-bar">
         <div></div>
         <div>
+          <button
+            disabled={pageNo <= 0 }
+            className="pdf-edit-page__big-btn"
+            onClick={() => {
+              handlePage("minus");
+            }}
+          >
+            上一頁
+          </button>
+          <button
+            disabled={pageNo + 1 >= pdfImgArr.length}
+            className="pdf-edit-page__big-btn"
+            onClick={() => {
+              handlePage("add");
+            }}
+          >
+            下一頁
+          </button>
           <button className="pdf-edit-page__big-btn" onClick={handleDelAll}>
             刪除全部簽名檔
           </button>

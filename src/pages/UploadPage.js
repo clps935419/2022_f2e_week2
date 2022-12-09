@@ -24,21 +24,25 @@ function UploadPage() {
     accept:"image/*,.pdf",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     onChange: async (e) => {
-      console.log("in",e.target.files);
-      const pdfData = await printPDF(e.target.files[0]);
+      const pdfImgArr = [];
+      const { pdfDoc, totalPdfPage } = await printPDFInfo(e.target.files[0]);
+      console.log("totalPdfPage", totalPdfPage);
+      for (let index = 1; index <= totalPdfPage; index++) {
+        const pdfData = await printPDF({ pdfDoc ,page:index});
+        const pdfImage = await pdfToImage(pdfData);
+        pdfImgArr.push(pdfImage);
+        console.log(
+          "🚀 ~ file: UploadPage.js:33 ~ onChange: ~ pdfImage",
+          pdfImage
+        );
+      }
       console.log(
-        "🚀 ~ file: App.js ~ line 29 ~ onChange: ~  pdfData ",
-        pdfData
+        "🚀 ~ file: App.js ~ line 29 ~ onChange: ~  ppdfImgArr ",
+        pdfImgArr
       );
-      const pdfImage = await pdfToImage(pdfData);
-      console.log(
-        "🚀 ~ file: App.js ~ line 30 ~ onChange: ~ pdfImage",
-        pdfImage
-      );
-
       GlobalDispatch({
-        type: "setPDFImg",
-        payload: { pdfImg: pdfImage },
+        type: "setPDFImgArr",
+        payload: { pdfImgArr: pdfImgArr },
       });
       navigate("/createSign");
     },
@@ -78,18 +82,8 @@ function readBlob(blob) {
     reader.readAsDataURL(blob);
   });
 }
-async function printPDF(pdfData) {
-  // 將檔案處理成 base64
-  pdfData = await readBlob(pdfData);
-
-  // 將 base64 中的前綴刪去，並進行解碼
-  const data = atob(pdfData.substring(Base64Prefix.length));
-
-  // 利用解碼的檔案，載入 PDF 檔及第一頁
-  const pdfDoc = await pdfjs.getDocument({ data }).promise;
-  console.log("🚀 ~ file: UploadPage.js:90 ~ printPDF ~ pdfDoc", pdfDoc)
-  const pdfPage = await pdfDoc.getPage(1);
-
+async function printPDF({pdfDoc,page}) {
+  const pdfPage = await pdfDoc.getPage(page);
   // 設定尺寸及產生 canvas
   const viewport = pdfPage.getViewport({ scale: window.devicePixelRatio });
   const canvas = document.createElement("canvas");
@@ -107,6 +101,22 @@ async function printPDF(pdfData) {
   // 回傳做好的 PDF canvas
   return renderTask.promise.then(() => canvas);
 }
+async function printPDFInfo(pdfData) {
+  // 將檔案處理成 base64
+  pdfData = await readBlob(pdfData);
+
+  // 將 base64 中的前綴刪去，並進行解碼
+  const data = atob(pdfData.substring(Base64Prefix.length));
+
+  // 利用解碼的檔案，載入 PDF 檔及第一頁
+  const pdfDoc = await pdfjs.getDocument({ data }).promise;
+  const totalPdfPage = pdfDoc._pdfInfo.numPages;
+  return {
+    pdfDoc,
+    totalPdfPage
+  }
+}
+
 async function pdfToImage(pdfData) {
   // 設定 PDF 轉為圖片時的比例
   const scale = 1 / window.devicePixelRatio;

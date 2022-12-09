@@ -33,5 +33,8 @@
     padding: 10px 32px;
     border: none;
     color: #FFFFFF;
+    &:disabled{
+      background: gray;
+    }
   }
 }
