@@ -19,9 +19,17 @@ function UploadPage() {
     multiple: false,
     accept:".pdf",
     onChange: async (e) => {
+      GlobalDispatch({
+        type: "setIsLoading",
+        payload: true,
+      });
       const fileType = e.target.files[0].type;
       if(fileType !== "application/pdf"){
         message.error("錯誤的上傳格式");
+        GlobalDispatch({
+          type: "setIsLoading",
+          payload: false,
+        });
         return;
       }
       const pdfImgArr = [];
@@ -31,6 +39,10 @@ function UploadPage() {
         const pdfImage = await pdfToImage(pdfData);
         pdfImgArr.push(pdfImage);
       }
+      GlobalDispatch({
+        type: "setIsLoading",
+        payload: false,
+      });
       GlobalDispatch({
         type: "setPDFImgArr",
         payload: { pdfImgArr: pdfImgArr },

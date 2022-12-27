@@ -6,6 +6,7 @@ const initState = {
   signImg: "",
   pdfImgArr:[],
   pageNo: 0,
+  isLoading:false
 };
 
 function globalReducer(state, action) {
@@ -38,7 +39,12 @@ function globalReducer(state, action) {
         ...state,
         pageNo: 0,
         pdfImg: "",
-        pdfImgArr:[],
+        pdfImgArr: [],
+      };
+    case "setIsLoading":
+      return {
+        ...state,
+        isLoading: action.payload,
       };
   }
 }
