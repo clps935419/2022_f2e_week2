@@ -6,15 +6,22 @@ const initState = {
   signImg: "",
   pdfImgArr:[],
   pageNo: 0,
-  isLoading:false
+  isLoading:false,
+  record:{}
 };
 
 function globalReducer(state, action) {
   switch (action.type) {
-    case "setPDFImg":
+    case "setRecord":
       return {
         ...state,
-        pdfImg: action.payload.pdfImg,
+        record: {
+          ...state.record,
+          [action.payload.page]: {
+            ...action.payload.content,
+            url: action.payload.url,
+          },
+        },
       };
     case "setPDFImgArr":
       return {

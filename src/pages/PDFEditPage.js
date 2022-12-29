@@ -6,8 +6,8 @@ import { message } from "antd";
 
 function PDFEditPage() {
   const { GlobalDispatch, GlobalState } = useContext(GlobalDataContext);
-  const { pdfImg,pdfImgArr, signImg , pageNo } = GlobalState;
-  console.log("---", pdfImg, pdfImgArr, signImg, pageNo);
+  const { pdfImg, pdfImgArr, signImg, pageNo, record } = GlobalState;
+  console.log("---", pdfImg, pdfImgArr, signImg, pageNo, record);
   const canvas = useRef(null);
   const pdf = new jsPDF();
   useEffect(() => {
@@ -20,14 +20,25 @@ function PDFEditPage() {
     if (!!!pdfImg) {
       return;
     }
-    console.log("---", pdfImg);
-    canvas.current.setWidth(pdfImg.width / window.devicePixelRatio);
-    canvas.current.setHeight(pdfImg.height / window.devicePixelRatio);
+    canvas.current.clear();
+    console.log("---", record, record[pageNo], pdfImg);
+    
+    if (record[pageNo]) {
+      console.log('load')
+      canvas.current.loadFromJSON(
+        record[pageNo],
+        canvas.current.renderAll.bind(canvas.current)
+      );
+    } else {
+      canvas.current.setWidth(pdfImg.width / window.devicePixelRatio);
+      canvas.current.setHeight(pdfImg.height / window.devicePixelRatio);
+      canvas.current.setBackgroundImage(
+        pdfImg,
+        canvas.current.renderAll.bind(canvas.current)
+      );
+    }
+      
     // 將 PDF 畫面設定為背景
-    canvas.current.setBackgroundImage(
-      pdfImg,
-      canvas.current.renderAll.bind(canvas.current)
-    );
   }, [pdfImg]);
 
   function handlePutSign() {
@@ -40,16 +51,36 @@ function PDFEditPage() {
       image.scaleY = 0.5;
       console.log("img", image);
       canvas.current.add(image);
+      
     });
+    
   }
   function handleDownload() {
-    const image = canvas.current.toDataURL("image/png");
 
     // 設定背景在 PDF 中的位置及大小
     const width = pdf.internal.pageSize.width;
     const height = pdf.internal.pageSize.height;
-    pdf.addImage(image, "png", 0, 0, width, height);
 
+    for (let index = 0; index < pdfImgArr.length; index++) {
+      if(index!==0){
+        pdf.addPage();
+      }
+      console.log("record", record[index]);
+      if(!!!record[index]){
+        pdf.addImage(
+          pdfImgArr[index].toDataURL("image/png"),
+          "png",
+          0,
+          0,
+          width,
+          height
+        );
+      }else{
+        pdf.addImage(record[index].url, "png", 0, 0, width, height);
+      }
+      console.log("***", pdfImgArr[index]);
+      
+    }
     // 將檔案取名並下載
     pdf.save("download.pdf");
   }
@@ -73,6 +104,15 @@ function PDFEditPage() {
     message.success("刪除成功");
   }
   function handlePage(type){
+    console.log("存檔", pageNo);
+    GlobalDispatch({
+      type: "setRecord",
+      payload: {
+        page: pageNo,
+        content: canvas.current.toJSON(),
+        url: canvas.current.toDataURL("image/png"),
+      },
+    });
     if(type==="add"){
       GlobalDispatch({
         type: "setPageNo",
