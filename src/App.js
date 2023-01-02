@@ -9,9 +9,7 @@ import { GlobalDataContext } from "@/GlobalProvider.js";
 function App() {
   const routElement = useRoutes(routeConfig);
   const { GlobalState } = useContext(GlobalDataContext);
-  console.log("🚀 ~ file: App.js:12 ~ App ~ GlobalState", GlobalState)
   const { isLoading } = GlobalState;
-  console.log("🚀 ~ file: App.js:13 ~ App ~ isLoading", isLoading)
   return (
     <>
       <div className="wrapper">

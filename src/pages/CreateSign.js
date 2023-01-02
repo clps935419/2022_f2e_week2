@@ -16,13 +16,7 @@ function CreateSign() {
     name: "file",
     multiple: false,
     onChange: async (e) => {
-      console.log("in", e.target.files);
       const signData = await toBase64(e.target.files[0]);
-      
-      console.log(
-        "🚀 ~ file: App.js ~ line 29 ~ onChange: ~  pdfData ",
-        signData
-      );
       GlobalDispatch({
         type: "setSignImg",
         payload: { signImg: signData },
@@ -68,8 +62,6 @@ function CreateSign() {
   // 取得滑鼠 / 手指在畫布上的位置
   function getPaintPosition(e) {
     const canvasSize = canvas.current.getBoundingClientRect();
-    console.log("🚀 ~ file: CreateSign.js ~ line 67 ~ getPaintPosition ~ canvasSize", canvasSize)
-
     if (e.type === "mousemove") {
       return {
         x: e.clientX - canvasSize.left,

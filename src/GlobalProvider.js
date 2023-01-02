@@ -35,7 +35,6 @@ function globalReducer(state, action) {
         signImg: action.payload.signImg,
       };
     case "setPageNo":
-      console.log("page", action.payload.pageNo);
       return {
         ...state,
         pageNo: action.payload.pageNo,
@@ -44,9 +43,12 @@ function globalReducer(state, action) {
     case "setResetToIndex":
       return {
         ...state,
-        pageNo: 0,
         pdfImg: "",
+        signImg: "",
         pdfImgArr: [],
+        pageNo: 0,
+        isLoading: false,
+        record: {},
       };
     case "setIsLoading":
       return {

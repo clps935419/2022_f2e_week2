@@ -1,5 +1,5 @@
 import { GlobalDataContext } from "@/GlobalProvider.js";
-import { useEffect, useContext, useRef,useState } from "react";
+import { useEffect, useContext, useRef, useState, useCallback } from "react";
 import { fabric } from "fabric";
 import jsPDF from "jspdf";
 import { message } from "antd";
@@ -7,7 +7,6 @@ import { message } from "antd";
 function PDFEditPage() {
   const { GlobalDispatch, GlobalState } = useContext(GlobalDataContext);
   const { pdfImg, pdfImgArr, signImg, pageNo, record } = GlobalState;
-  console.log("---", pdfImg, pdfImgArr, signImg, pageNo, record);
   const canvas = useRef(null);
   const pdf = new jsPDF();
   useEffect(() => {
@@ -15,16 +14,15 @@ function PDFEditPage() {
       return;
     }
     canvas.current = new fabric.Canvas("canvas");
+    
   }, []);
+ 
   useEffect(() => {
     if (!!!pdfImg) {
       return;
     }
-    canvas.current.clear();
-    console.log("---", record, record[pageNo], pdfImg);
-    
+    canvas.current.clear();    
     if (record[pageNo]) {
-      console.log('load')
       canvas.current.loadFromJSON(
         record[pageNo],
         canvas.current.renderAll.bind(canvas.current)
@@ -37,26 +35,39 @@ function PDFEditPage() {
         canvas.current.renderAll.bind(canvas.current)
       );
     }
-      
+    canvas.current.on("object:added", (e) => {
+      handleSave({ pageNo });
+    });
+    canvas.current.on("object:moving", (e) => {
+      handleSave({ pageNo });
+    });
+    canvas.current.on("object:removed", (e) => {
+      handleSave({ pageNo });
+    });
+    canvas.current.on("object:scaling", (e) => {
+      handleSave({ pageNo });
+    });
+    canvas.current.on("object:rotating", (e) => {
+      handleSave({ pageNo });
+    });  
+    return()=>{
+      canvas.current.__eventListeners = {};
+    }
     // 將 PDF 畫面設定為背景
   }, [pdfImg]);
 
   function handlePutSign() {
-    console.log("***", signImg);
     fabric.Image.fromURL(signImg, function (image) {
       // 設定簽名出現的位置及大小，後續可調整
       image.top = 100;
       image.left = 100;
       image.scaleX = 0.5;
       image.scaleY = 0.5;
-      console.log("img", image);
       canvas.current.add(image);
-      
     });
-    
   }
-  function handleDownload() {
-
+  async function handleDownload() {
+    // const a = await handleSave();
     // 設定背景在 PDF 中的位置及大小
     const width = pdf.internal.pageSize.width;
     const height = pdf.internal.pageSize.height;
@@ -65,7 +76,6 @@ function PDFEditPage() {
       if(index!==0){
         pdf.addPage();
       }
-      console.log("record", record[index]);
       if(!!!record[index]){
         pdf.addImage(
           pdfImgArr[index].toDataURL("image/png"),
@@ -77,9 +87,7 @@ function PDFEditPage() {
         );
       }else{
         pdf.addImage(record[index].url, "png", 0, 0, width, height);
-      }
-      console.log("***", pdfImgArr[index]);
-      
+      }      
     }
     // 將檔案取名並下載
     pdf.save("download.pdf");
@@ -104,15 +112,7 @@ function PDFEditPage() {
     message.success("刪除成功");
   }
   function handlePage(type){
-    console.log("存檔", pageNo);
-    GlobalDispatch({
-      type: "setRecord",
-      payload: {
-        page: pageNo,
-        content: canvas.current.toJSON(),
-        url: canvas.current.toDataURL("image/png"),
-      },
-    });
+    handleSave({ pageNo });
     if(type==="add"){
       GlobalDispatch({
         type: "setPageNo",
@@ -125,6 +125,16 @@ function PDFEditPage() {
       });
     }
   }
+  function handleSave({ pageNo }) {
+    GlobalDispatch({
+      type: "setRecord",
+      payload: {
+        page: pageNo,
+        content: canvas.current.toJSON(),
+        url: canvas.current.toDataURL("image/png"),
+      },
+    });
+  }
 
   return (
     <div className="pdf-edit-page">
@@ -133,7 +143,7 @@ function PDFEditPage() {
         <div></div>
         <div>
           <button
-            disabled={pageNo <= 0 }
+            disabled={pageNo <= 0}
             className="pdf-edit-page__big-btn"
             onClick={() => {
               handlePage("minus");

@@ -6,7 +6,6 @@ function RouterInterceptor({ inner }) {
   const {type} = inner;
   const { GlobalState, GlobalDispatch } = useContext(GlobalDataContext);
   const { pdfImg, signImg } = GlobalState;
-  console.log("type", type.name);
   if (type.name === "CreateSign"){
     if (!!!pdfImg) {
       GlobalDispatch({
